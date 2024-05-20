@@ -14,7 +14,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Nested
+
 class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
 
     private CustomerJdbcDataAccessService underTest;
@@ -326,7 +326,38 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
     }
 
     @Test
-    void updateCustomer() {
+    void willNotUpdateWhenNothingToUpdate() {
+        String email = FAKER.internet().safeEmailAddress() + "." + UUID.randomUUID();
+        String name = FAKER.name().fullName();
+        Customer customer = new Customer(
+                name,
+                email,
+                20
+        );
+
+        underTest.insertCustomer(customer);
+
+        Long id = underTest.selectAllCustomers().stream()
+                .filter(c -> c.getEmail().equals(email))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+        Customer updatedCustomer = new Customer();
+        updatedCustomer.setId(id);
+
+        underTest.updateCustomer(updatedCustomer);
+
+        Optional<Customer> actual = underTest.selectCustomerById(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(
+                c -> {
+                    assertThat(c.getId()).isEqualTo(id);
+                    assertThat(c.getName()).isEqualTo(customer.getName());
+                    assertThat(c.getEmail()).isEqualTo(customer.getEmail());
+                    assertThat(c.getAge()).isEqualTo(customer.getAge());
+                }
+        );
 
 
     }

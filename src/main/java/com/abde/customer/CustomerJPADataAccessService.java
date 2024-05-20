@@ -21,7 +21,7 @@ public class CustomerJPADataAccessService implements CustomerDAO{
 
     @Override
     public Optional<Customer> selectCustomerById(Long id) {
-        return customerRepository.findById(Math.toIntExact(id));
+        return customerRepository.findById(id);
     }
 
 
@@ -38,12 +38,12 @@ public class CustomerJPADataAccessService implements CustomerDAO{
 
     @Override
     public boolean existsPersonWithId(Long id) {
-        return customerRepository.existsById(Math.toIntExact(id));
+        return customerRepository.existsCustomerById(id);
     }
 
     @Override
     public void deleteCustomerById(Long id) {
-        customerRepository.deleteById(Math.toIntExact(id));
+        customerRepository.deleteById(id);
     }
 
     @Override

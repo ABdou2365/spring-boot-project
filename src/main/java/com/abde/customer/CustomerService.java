@@ -16,7 +16,7 @@ public class CustomerService {
     private final CustomerDAO customerDAO;
 
 
-    private CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO) {
+    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO) {
 
         this.customerDAO = customerDAO;
     }
@@ -25,8 +25,8 @@ public class CustomerService {
         return customerDAO.selectAllCustomers();
     }
 
-    public Customer getCustomer(Integer id) {
-        return customerDAO.selectCustomerById(Long.valueOf(id))
+    public Customer getCustomer(Long id) {
+        return customerDAO.selectCustomerById(id)
                 .orElseThrow(
                 () -> new ResourceNotFoundException("Customer with id = [%s] Not found".formatted(id))
         );
@@ -50,7 +50,7 @@ public class CustomerService {
 
     }
 
-    public void updateCustomer(Integer id, CustomerUpdateRequest customerUpdateRequest) {
+    public void updateCustomer(Long id, CustomerUpdateRequest customerUpdateRequest) {
 
 
         Customer customer = getCustomer(id);

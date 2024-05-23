@@ -79,19 +79,17 @@ public class CustomerService {
         }
 
         customerDAO.updateCustomer(customer);
-
-
     }
 
-    public void deleteCustomer(Integer id) {
+    public void deleteCustomer(Long id) {
         //Check if the customer exists
 
-        if(!customerDAO.existsPersonWithId(Long.valueOf(id))){
+        if(!customerDAO.existsPersonWithId(id)){
             throw new ResourceNotFoundException("There's no Customer with id = [%s]".formatted(id));
         }
 
         //Delete the customer
-        customerDAO.deleteCustomerById(Long.valueOf(id));
+        customerDAO.deleteCustomerById(id);
     }
 
 }

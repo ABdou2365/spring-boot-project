@@ -1,5 +1,6 @@
 package com.abde.customer;
 
+import com.abde.error.BadRequestException;
 import com.abde.error.DuplicatedRessourceException;
 import com.abde.error.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,7 +175,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void canUpdateOnlyEmailCustomer() {
+    void canUpdateOnlyCustomerEmail() {
         Long id = 1L;
 
         Customer customer = new Customer(
@@ -203,7 +204,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void canUpdateOnlyAgeCustomer() {
+    void canUpdateOnlyCustomerAge() {
         Long id = 1L;
 
         Customer customer = new Customer(
@@ -254,6 +255,51 @@ class CustomerServiceTest {
         verify(customerDAO,never()).deleteCustomerById(id);
     }
 
+    @Test
+    void willThrowExceptionWhenTryingUpdatingWhenEmailAlreadyTaken() {
+        Long id = 1L;
 
+        Customer customer = new Customer(
+                id, "user", "user@email.com", 21
+        );
+        when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        String newEmail = "abde@email.com";
+        CustomerUpdateRequest updatedCustomerRequest = new CustomerUpdateRequest(
+                null, newEmail, null
+        );
+
+        when(customerDAO.existsPersonWithEmail(newEmail)).thenReturn(true);
+
+        assertThatThrownBy(()->underTest.updateCustomer(id,updatedCustomerRequest))
+                .isInstanceOf(DuplicatedRessourceException.class)
+                        .hasMessage("email already taken");
+
+
+        verify(customerDAO , never()).updateCustomer(any());
+
+    }
+
+    @Test
+    void willThrowExceptionWhenThereIsChanges() {
+        Long id = 1L;
+
+        Customer customer = new Customer(
+                id, "user", "user@email.com", 21
+        );
+        when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        String newEmail = "abde@email.com";
+        CustomerUpdateRequest updatedCustomerRequest = new CustomerUpdateRequest(
+                customer.getName(), customer.getEmail(), customer.getAge()
+        );
+
+        assertThatThrownBy(()->underTest.updateCustomer(id,updatedCustomerRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("No changes made");
+
+        verify(customerDAO,never()).updateCustomer(any());
+
+    }
 
 }

@@ -93,8 +93,10 @@ public class Customer{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return id == customer.id && age == customer.age && Objects.equals(name, customer.name) && Objects.equals(email, customer.email);
-    }
+return age == customer.age &&
+        Objects.equals(id, customer.id) &&
+        Objects.equals(name, customer.name) &&
+        Objects.equals(email, customer.email);    }
 
     @Override
     public int hashCode() {

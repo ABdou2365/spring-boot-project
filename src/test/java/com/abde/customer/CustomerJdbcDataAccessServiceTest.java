@@ -238,7 +238,7 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
                 .findFirst()
                 .orElseThrow();
 
-        var NewEmail = "abde@gmail.com";
+        var NewEmail = "abdeoxxx@gmail.com";
         Customer updatedCustomer = new Customer();
         updatedCustomer.setId(id);
         updatedCustomer.setEmail(NewEmail);

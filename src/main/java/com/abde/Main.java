@@ -38,15 +38,15 @@ public class Main {
     @Bean
     CommandLineRunner runner(CustomerRepository customerRepository){
         return args -> {
-            Customer abde = new Customer("Ad", "abdee@gmail.com", 21);
-
-
-
-            Customer nabil = new Customer( "Nabil", "nabil@gmail.com", 99);
-
-            List<Customer> customers = List.of(abde,nabil);
-
-            customerRepository.saveAll(customers);
+//            Customer abde = new Customer("Ad", "abdee@gmail.com", 21);
+//
+//
+//
+//            Customer nabil = new Customer( "Nabil", "nabil@gmail.com", 99);
+//
+//            List<Customer> customers = List.of(abde,nabil);
+//
+//            customerRepository.saveAll(customers);
 
         };
     }

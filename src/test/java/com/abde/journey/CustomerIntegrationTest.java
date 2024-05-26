@@ -2,6 +2,7 @@ package com.abde.journey;
 
 import com.abde.customer.Customer;
 import com.abde.customer.CustomerRegestrationRequest;
+import com.abde.customer.CustomerUpdateRequest;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.junit.jupiter.api.Test;
@@ -72,5 +73,97 @@ public class CustomerIntegrationTest {
                 .exchange().expectStatus().isOk()
                 .expectBody(new ParameterizedTypeReference<Customer>() {
                 }).isEqualTo(expectedCustomer);
+
+
+    }
+
+    @Test
+    void canDeleteACustomer() {
+        Faker FAKER = new Faker();
+        Name fakerName = FAKER.name();
+        String name = fakerName.fullName();
+        String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@abde.com";
+        Integer age = random.nextInt(1,100);
+        CustomerRegestrationRequest customerRegistrationRequest =
+                new CustomerRegestrationRequest(name, email, age);
+
+
+        webClient.post()
+                .uri(customerURI)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(customerRegistrationRequest), CustomerRegestrationRequest.class)
+                .exchange().expectStatus().isOk();
+
+        List<Customer> responseBody = webClient.get()
+                .uri(customerURI)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isOk()
+                .expectBodyList(new ParameterizedTypeReference<Customer>() {
+                }).returnResult().getResponseBody();
+
+        var id = responseBody.stream().filter(c->c.getEmail().equals(email))
+                .map(Customer::getId).findFirst().orElseThrow();
+
+        webClient.delete()
+                .uri(customerURI + "/{id}",id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isOk();
+
+        webClient.get()
+                .uri(customerURI + "/{id}",id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isNotFound();
+    }
+
+    @Test
+    void canUpdateACustomer() {
+        Faker FAKER = new Faker();
+        Name fakerName = FAKER.name();
+        String name = fakerName.fullName();
+        String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@abde.com";
+        Integer age = random.nextInt(1,100);
+        CustomerRegestrationRequest customerRegistrationRequest =
+                new CustomerRegestrationRequest(name, email, age);
+
+
+        webClient.post()
+                .uri(customerURI)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(customerRegistrationRequest), CustomerRegestrationRequest.class)
+                .exchange().expectStatus().isOk();
+
+        List<Customer> responseBody = webClient.get()
+                .uri(customerURI)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isOk()
+                .expectBodyList(new ParameterizedTypeReference<Customer>() {
+                }).returnResult().getResponseBody();
+
+        var id = responseBody.stream().filter(c->c.getEmail().equals(email))
+                .map(Customer::getId).findFirst().orElseThrow();
+
+        String newName = "name";
+        CustomerUpdateRequest updatedRequest =
+                new CustomerUpdateRequest(newName, null, null);
+
+        webClient.put()
+                .uri(customerURI + "/{id}",id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(updatedRequest), CustomerUpdateRequest.class)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isOk();
+
+        Customer updated = webClient.get()
+                .uri(customerURI + "/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange().expectStatus().isOk()
+                .expectBody(Customer.class).returnResult().getResponseBody();
+
+        Customer expected = new Customer(id,newName, email, age);
+
+        assertThat(updated).isEqualTo(expected);
+
     }
 }

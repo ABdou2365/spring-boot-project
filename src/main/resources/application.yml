@@ -7,11 +7,20 @@ spring:
     url: jdbc:postgresql://localhost:5332/customer
     username: amigoscode
     password: password
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+  main:
+    web-application-type: servlet
+
+logging:
+  level:
+    org.springframework: DEBUG
+    org.hibernate: DEBUG
+    com.zaxxer.hikari: DEBUG

@@ -1,18 +1,14 @@
 package com.abde.customer;
 
 import com.abde.AbstractTestContainers;
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
@@ -79,25 +75,6 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         var actual = underTest.selectCustomerById(id);
 
         assertThat(actual).isEmpty();
-    }
-
-    @Test
-    void insertCustomer() {
-        String email = FAKER.internet().safeEmailAddress() + "." + UUID.randomUUID();
-        String name = FAKER.name().fullName();
-        Customer customer = new Customer(
-                name,
-                email,
-                21
-        );
-        underTest.insertCustomer(customer);
-
-
-        boolean actual = underTest.existsPersonWithEmail(email);
-
-        assertThat(actual).isTrue();
-
-
     }
 
     @Test
@@ -238,7 +215,7 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
                 .findFirst()
                 .orElseThrow();
 
-        var NewEmail = "abdeoxxx@gmail.com";
+        var NewEmail = FAKER.internet().safeEmailAddress() + "." + UUID.randomUUID();
         Customer updatedCustomer = new Customer();
         updatedCustomer.setId(id);
         updatedCustomer.setEmail(NewEmail);

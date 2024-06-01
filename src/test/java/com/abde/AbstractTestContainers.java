@@ -3,7 +3,6 @@ package com.abde;
 import com.github.javafaker.Faker;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -47,7 +46,8 @@ public abstract class AbstractTestContainers {
                 .driverClassName(postgreSQLContainer.getDriverClassName())
                 .url(postgreSQLContainer.getJdbcUrl())
                 .username(postgreSQLContainer.getUsername())
-                .password(postgreSQLContainer.getPassword()).build();
+                .password(postgreSQLContainer.getPassword())
+                .build();
     }
 
     protected static JdbcTemplate getJDBCtemplate(){

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class CustomerIntegrationTest {
+public class CustomerIT {
     private static final String customerURI = "api/v1/customers";
 
     @Autowired
@@ -34,7 +34,7 @@ public class CustomerIntegrationTest {
         Faker FAKER = new Faker();
         Name fakerName = FAKER.name();
         String name = fakerName.fullName();
-        String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@abde.com";
+        String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@hmida.com";
         Integer age = random.nextInt(1,100);
         CustomerRegestrationRequest customerRegistrationRequest =
                 new CustomerRegestrationRequest(name, email, age);
@@ -73,8 +73,6 @@ public class CustomerIntegrationTest {
                 .exchange().expectStatus().isOk()
                 .expectBody(new ParameterizedTypeReference<Customer>() {
                 }).isEqualTo(expectedCustomer);
-
-
     }
 
     @Test

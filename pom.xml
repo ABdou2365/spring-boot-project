@@ -20,7 +20,7 @@
 	<name>spring-boot-project</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<docker.username>abdomoutawakkil2002996</docker.username>
@@ -116,17 +116,17 @@
 					<version>3.4.3</version>
 					<configuration>
 						<from>
-							<image>eclipse-temurin:17</image>
-							<plateforms>
-								<plateform>
+							<image>eclipse-temurin:21</image>
+							<platforms>
+								<platform>
 									<architecture>arm64</architecture>
 									<os>linux</os>
-								</plateform>
-								<plateform>
+								</platform>
+								<platform>
 									<architecture>amd64</architecture>
 									<os>linux</os>
-								</plateform>
-							</plateforms>
+								</platform>
+							</platforms>
 						</from>
 						<to>
 							<image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>

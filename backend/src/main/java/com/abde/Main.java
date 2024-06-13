@@ -9,27 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Arrays;
-import java.util.List;
-
-
 @SpringBootApplication
 public class Main {
 
 
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Main.class);
-
-
-
-        int beanDefinitionNames = applicationContext.getBeanDefinitionCount();
-
-//        for (String beanDefinitionName : beanDefinitionNames) {
-//            System.out.println(beanDefinitionName);
-//        }
-        System.out.println(beanDefinitionNames);
-
-
 
     }
 

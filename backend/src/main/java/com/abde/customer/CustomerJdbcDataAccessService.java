@@ -50,7 +50,7 @@ public class CustomerJdbcDataAccessService implements CustomerDAO {
     @Override
     public boolean existsPersonWithEmail(String email) {
         var sql = """
-                SELECT COUNT(id) FROM customer WHERE email=?;
+                SELECT COUNT(id) FROM customer WHERE name=?;
                 """;
         Integer count = jdbcTemplate.queryForObject(sql,Integer.class,email);
         return count != null && count > 0;

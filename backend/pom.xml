@@ -24,6 +24,8 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<docker.username>abdomoutawakkil2002996</docker.username>
+		<docker.image.name>abde-api</docker.image.name>
+		<docker.image.tag/>
 		<skip.it>false</skip.it>
 	</properties>
 	<dependencies>
@@ -129,7 +131,7 @@
 							</platforms>
 						</from>
 						<to>
-							<image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+							<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
 							<tags>
 								<tag>latest</tag>
 							</tags>

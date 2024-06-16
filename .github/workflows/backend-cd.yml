@@ -59,7 +59,7 @@ jobs:
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Image tag:${{steps.build-number.outputs.BUILD_NUMBER}} pushed to 
-          https://hub.docker.com/repository/docker/${{ secrets.DOCKERHUB_USERNAME }}/abde-api :docker:"}' 
+          https://hub.docker.com/repository/docker/abdomoutawakkil2002996/abde-api :docker:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
@@ -102,7 +102,8 @@ jobs:
           --data '{"text":"Deployment and commit completed :check1: ${{ secrets.EB_ENVIRONMENT_URL }} "}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Commiting to repo slack message
+        if: always()
         run: >
           curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"Job status success :success:"}' 
+          --data '{"text":"Job status ${{ job.status }}"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}

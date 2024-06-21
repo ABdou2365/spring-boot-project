@@ -6,6 +6,7 @@ import { Stack , Spinner } from "@chakra-ui/react";
 import Card from "./components/Card.jsx";
 import { Wrap, WrapItem } from '@chakra-ui/react'
 
+
 function App() {
 
     const [customers,setCustomers] = useState([]);
@@ -60,6 +61,6 @@ function App() {
                     }
                 </Wrap>
             </SidebarWithHeader>
-        )
-    }
+                )
+}
 export default App

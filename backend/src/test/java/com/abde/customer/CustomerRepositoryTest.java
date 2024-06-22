@@ -35,8 +35,8 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                21
-        );
+                21,
+                Gender.MALE);
         underTest.save(customer);
 
 
@@ -64,8 +64,8 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                21
-        );
+                21,
+                Gender.MALE);
         underTest.save(customer);
 
         Long id = underTest.findAll().stream()

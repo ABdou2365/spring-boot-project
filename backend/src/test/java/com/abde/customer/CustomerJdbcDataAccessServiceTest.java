@@ -29,8 +29,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
             FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "."+ UUID.randomUUID(),
-                21
-        );
+                21,
+                Gender.MALE);
         underTest.insertCustomer(customer);
 
         List<Customer> actual = underTest.selectAllCustomers();
@@ -45,8 +45,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                21
-        );
+                21,
+                Gender.MALE);
         underTest.insertCustomer(customer);
 
         Long id = underTest.selectAllCustomers().stream()
@@ -84,8 +84,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -111,8 +111,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                21
-        );
+                21,
+                Gender.MALE);
         underTest.insertCustomer(customer);
 
         Long id = underTest.selectAllCustomers().stream()
@@ -142,8 +142,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                21
-        );
+                21,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -167,8 +167,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -204,8 +204,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -241,8 +241,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -278,8 +278,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 
@@ -309,8 +309,8 @@ class CustomerJdbcDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 name,
                 email,
-                20
-        );
+                20,
+                Gender.MALE);
 
         underTest.insertCustomer(customer);
 

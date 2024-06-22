@@ -3,6 +3,7 @@ package com.abde.journey;
 import com.abde.customer.Customer;
 import com.abde.customer.CustomerRegestrationRequest;
 import com.abde.customer.CustomerUpdateRequest;
+import com.abde.customer.Gender;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class CustomerIT {
                 .expectBodyList(new ParameterizedTypeReference<Customer>() {
                 }).returnResult().getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age);
+        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
 
         assertThat(responseBody)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
@@ -159,7 +160,7 @@ public class CustomerIT {
                 .exchange().expectStatus().isOk()
                 .expectBody(Customer.class).returnResult().getResponseBody();
 
-        Customer expected = new Customer(id,newName, email, age);
+        Customer expected = new Customer(id,newName, email, age, Gender.MALE);
 
         assertThat(updated).isEqualTo(expected);
 

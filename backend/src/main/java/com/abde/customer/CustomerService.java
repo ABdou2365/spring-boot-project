@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -41,8 +40,8 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegestrationRequest.name(),
                 customerRegestrationRequest.email(),
-                customerRegestrationRequest.age()
-        );
+                customerRegestrationRequest.age(),
+                Gender.MALE);
 
         //save
 

@@ -4,11 +4,14 @@ import com.abde.customer.Customer;
 import com.abde.customer.CustomerRepository;
 import com.abde.customer.Gender;
 import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Random;
 
 
 @SpringBootApplication
@@ -35,11 +38,19 @@ public class Main {
     CommandLineRunner runner(CustomerRepository customerRepository){
         return args -> {
 
-            Faker faker = new Faker();
-            Customer customer1 = new Customer(faker.name().fullName()
-                    , faker.internet().safeEmailAddress()
-                    , faker.number().numberBetween(1,100), Gender.MALE);
-            //customerRepository.save(customer1);
+            var faker = new Faker();
+            Random random = new Random();
+            Name name = faker.name();
+            String firstName = name.firstName();
+            String lastName = name.lastName();
+            int age = faker.number().numberBetween(1, 100);
+            Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
+            Customer customer1 = new Customer(
+                    firstName + " " + lastName
+                    , firstName.toLowerCase()+"."+lastName.toLowerCase()+random.nextInt(0,100)+"@abde.com"
+                    , age, gender);
+            customerRepository.save(customer1);
 
         };
     }

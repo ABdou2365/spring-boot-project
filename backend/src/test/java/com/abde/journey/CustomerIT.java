@@ -37,8 +37,9 @@ public class CustomerIT {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@hmida.com";
         Integer age = random.nextInt(1,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
         CustomerRegestrationRequest customerRegistrationRequest =
-                new CustomerRegestrationRequest(name, email, age);
+                new CustomerRegestrationRequest(name, email, age,gender);
 
 
         webClient.post()
@@ -55,7 +56,7 @@ public class CustomerIT {
                 .expectBodyList(new ParameterizedTypeReference<Customer>() {
                 }).returnResult().getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
+        Customer expectedCustomer = new Customer(name, email, age, gender);
 
         assertThat(responseBody)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
@@ -83,8 +84,10 @@ public class CustomerIT {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@abde.com";
         Integer age = random.nextInt(1,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         CustomerRegestrationRequest customerRegistrationRequest =
-                new CustomerRegestrationRequest(name, email, age);
+                new CustomerRegestrationRequest(name, email, age,gender);
 
 
         webClient.post()
@@ -122,8 +125,10 @@ public class CustomerIT {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-"+ UUID.randomUUID() +"@abde.com";
         Integer age = random.nextInt(1,100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         CustomerRegestrationRequest customerRegistrationRequest =
-                new CustomerRegestrationRequest(name, email, age);
+                new CustomerRegestrationRequest(name, email, age,gender);
 
 
         webClient.post()
@@ -145,7 +150,7 @@ public class CustomerIT {
 
         String newName = "name";
         CustomerUpdateRequest updatedRequest =
-                new CustomerUpdateRequest(newName, null, null);
+                new CustomerUpdateRequest(newName, null, null,gender);
 
         webClient.put()
                 .uri(customerURI + "/{id}",id)
@@ -160,7 +165,7 @@ public class CustomerIT {
                 .exchange().expectStatus().isOk()
                 .expectBody(Customer.class).returnResult().getResponseBody();
 
-        Customer expected = new Customer(id,newName, email, age, Gender.MALE);
+        Customer expected = new Customer(id,newName, email, age, gender);
 
         assertThat(updated).isEqualTo(expected);
 

@@ -19,6 +19,7 @@ class CustomerRowMapperTest {
         when(resultSet.getString("name")).thenReturn("abde");
         when(resultSet.getString("email")).thenReturn("abde@gmail.com");
         when(resultSet.getInt("age")).thenReturn(22);
+        when(resultSet.getString("gender")).thenReturn("MALE");
 
         System.out.println("ID: " + resultSet.getLong("id")); // Should print 1
         System.out.println("Name: " + resultSet.getString("name")); // Should print abde

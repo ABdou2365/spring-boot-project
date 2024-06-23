@@ -41,7 +41,7 @@ public class CustomerService {
                 customerRegestrationRequest.name(),
                 customerRegestrationRequest.email(),
                 customerRegestrationRequest.age(),
-                Gender.MALE);
+                customerRegestrationRequest.gender());
 
         //save
 

@@ -54,7 +54,10 @@ function App() {
                     {
                         customers.map((customer, index) => (
                             <WrapItem key={index}>
-                                <Card {...customer} />
+                                <Card
+                                    {...customer}
+                                    ageNumber={index}
+                                />
                             </WrapItem>
 
                         ))

@@ -21,6 +21,7 @@ import {
 import React from "react";
 import {deleteCustomer} from "../services/client.js";
 import {successNotification} from "../services/notifications.js";
+import UpdateForm from "./UpdateForm.jsx";
 
 
 
@@ -83,51 +84,54 @@ export default function Card({name,age,email,id,gender,ageNumber,fetchCustomers}
 
                 </Box>
 
-                <Box p={6}>
-                    <>
-                    <Button colorScheme='red' onClick={onOpen}>
-                        Delete Customer
-                    </Button>
-                    <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                    >
-                        <AlertDialogOverlay>
-                            <AlertDialogContent>
-                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                    Delete Customer
-                                </AlertDialogHeader>
+                <Stack direction={'row'} justify={'center'}>
+                    <Stack m={4}>
+                        <UpdateForm name={name} age={age} id={id} email={email} gender={gender} fetchCustomers={fetchCustomers}/>
+                    </Stack>
+                    <Stack m={4}>
+                        <Button colorScheme='red' onClick={onOpen} mt={8} rounded={"full"}>
+                            Delete
+                        </Button>
+                        <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                        Delete Customer
+                                    </AlertDialogHeader>
 
-                                <AlertDialogBody>
-                                    Are you sure? You can't undo this action afterwards.
-                                </AlertDialogBody>
+                                    <AlertDialogBody>
+                                        Are you sure you want delete {name}? You can't undo this action afterwards.
+                                    </AlertDialogBody>
 
-                                <AlertDialogFooter>
-                                    <Button ref={cancelRef} onClick={onClose}>
-                                        Cancel
-                                    </Button>
-                                    <Button colorScheme='red' onClick={()=>{
-                                        onClose();
-                                        deleteCustomer(id)
-                                            .then(()=>{
-                                                    successNotification("customer deleted",`customer with id :${id} was successfully deleted`
-                                                    )
-                                                fetchCustomers()
-                                                }
-                                            )
-                                            .catch(e => {
-                                                throw e;
-                                            });
-                                    }} ml={3}>
-                                        Delete
-                                    </Button>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialogOverlay>
-                    </AlertDialog>
-                    </>
-                </Box>
+                                    <AlertDialogFooter>
+                                        <Button ref={cancelRef} onClick={onClose}>
+                                            Cancel
+                                        </Button>
+                                        <Button colorScheme='red' onClick={()=>{
+                                            onClose();
+                                            deleteCustomer(id)
+                                                .then(()=>{
+                                                        successNotification("customer deleted",`customer with id :${id} was successfully deleted`
+                                                        )
+                                                        fetchCustomers()
+                                                    }
+                                                )
+                                                .catch(e => {
+                                                    throw e;
+                                                });
+                                        }} ml={3}>
+                                            Delete
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </Stack>
+                </Stack>
             </Box>
         </Center>
     )

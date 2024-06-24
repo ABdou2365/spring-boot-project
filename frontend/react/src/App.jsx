@@ -5,6 +5,8 @@ import {getCustomers} from "./services/client.js";
 import { Stack , Spinner } from "@chakra-ui/react";
 import Card from "./components/Card.jsx";
 import { Wrap, WrapItem } from '@chakra-ui/react'
+import DrawerForm from "./components/DrawerForm.jsx";
+import {failNotification} from "./services/notifications.js";
 
 
 function App() {
@@ -12,20 +14,27 @@ function App() {
     const [customers,setCustomers] = useState([]);
     const [loading,setLoading] = useState(true);
 
+    const fetchCustomers = () => {
+        getCustomers().then(res => {
+                setCustomers(res.data)
+                console.log(res.data)
+            }
+        ).catch(err => {
+            failNotification(
+                err.code,
+                err.response.data.message
+            );
+        }).finally(
+            () => {
+                setLoading(false)
+            }
+        );
+    }
+
 
     useEffect(() => {
             setLoading(true)
-            getCustomers().then(res => {
-                    setCustomers(res.data)
-                console.log(res.data)
-                }
-            ).catch(err => {
-                throw err;
-            }).finally(
-                () => {
-                    setLoading(false)
-                }
-                );
+            fetchCustomers()
         },[]
     )
 
@@ -42,7 +51,8 @@ function App() {
         if (customers.length <= 0) {
             return (
                 <SidebarWithHeader>
-                    <Text>No customer is available</Text>
+                    <DrawerForm fetchCustomers={fetchCustomers}/>
+                    <Text mt={3}>No customer is available</Text>
                 </SidebarWithHeader>
             )
         }
@@ -50,6 +60,7 @@ function App() {
 
         return (
             <SidebarWithHeader>
+                <DrawerForm fetchCustomers={fetchCustomers}/>
                 <Wrap spacing='30px' justify='center'>
                     {
                         customers.map((customer, index) => (
@@ -57,6 +68,7 @@ function App() {
                                 <Card
                                     {...customer}
                                     ageNumber={index}
+                                    fetchCustomers={fetchCustomers}
                                 />
                             </WrapItem>
 

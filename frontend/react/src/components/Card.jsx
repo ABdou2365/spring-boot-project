@@ -10,11 +10,24 @@ import {
     Text,
     Stack,
     Button,
-    useColorModeValue, Tag,
+    useColorModeValue,
+    Tag,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter, AlertDialog, useDisclosure,
 } from '@chakra-ui/react'
+import React from "react";
+import {deleteCustomer} from "../services/client.js";
+import {successNotification} from "../services/notifications.js";
 
-export default function Card({name,age,email,id,gender,ageNumber}) {
-    let randomUserGender = ageNumber % 2 === 0 ? 'men' : 'women';
+
+
+export default function Card({name,age,email,id,gender,ageNumber,fetchCustomers}) {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
+    let randomUserGender = gender === "MALE" ? 'men' : 'women';
     return (
         <Center py={6}>
             <Box
@@ -68,6 +81,52 @@ export default function Card({name,age,email,id,gender,ageNumber}) {
                         </Stack>
                     </Stack>
 
+                </Box>
+
+                <Box p={6}>
+                    <>
+                    <Button colorScheme='red' onClick={onOpen}>
+                        Delete Customer
+                    </Button>
+                    <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                    >
+                        <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                    Delete Customer
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody>
+                                    Are you sure? You can't undo this action afterwards.
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme='red' onClick={()=>{
+                                        onClose();
+                                        deleteCustomer(id)
+                                            .then(()=>{
+                                                    successNotification("customer deleted",`customer with id :${id} was successfully deleted`
+                                                    )
+                                                fetchCustomers()
+                                                }
+                                            )
+                                            .catch(e => {
+                                                throw e;
+                                            });
+                                    }} ml={3}>
+                                        Delete
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialogOverlay>
+                    </AlertDialog>
+                    </>
                 </Box>
             </Box>
         </Center>

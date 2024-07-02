@@ -41,18 +41,18 @@ jobs:
           REPO=abde-react \
           TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
           ../../.ci/build-publish.sh . \
-          --build-arg api_base_url=http://abde-api-env.eba-5einnppu.eu-west-3.elasticbeanstalk.com/
+          --build-arg api_base_url=http://abde-api-env.eba-5einnppu.eu-west-3.elasticbeanstalk.com
       - name: pushing image tag to dockerhub slack Message
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Image tag:${{steps.build-number.outputs.BUILD_NUMBER}} pushed to 
-          https://hub.docker.com/repository/docker/abdomoutawakkil2002996/abde-api :docker:"}' 
+          https://hub.docker.com/repository/docker/abdomoutawakkil2002996/abde-react :docker:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json Before updating the api image tag"
           cat ../../Dockerrun.aws.json
-          sed -i -E 's_(abdomoutawakkil2002996/abde-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../../Dockerrun.aws.json
+          sed -i -E 's_(abdomoutawakkil2002996/abde-react:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating the api image tag"
           cat ../../Dockerrun.aws.json
       - name: Starting deployment to Elastic Beanstalk slack message

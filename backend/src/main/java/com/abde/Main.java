@@ -25,9 +25,6 @@ public class Main {
 
         int beanDefinitionNames = applicationContext.getBeanDefinitionCount();
 
-//        for (String beanDefinitionName : beanDefinitionNames) {
-//            System.out.println(beanDefinitionName);
-//        }
         System.out.println(beanDefinitionNames);
 
 

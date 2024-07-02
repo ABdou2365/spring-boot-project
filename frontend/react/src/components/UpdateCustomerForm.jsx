@@ -31,15 +31,10 @@ const MySelect = ({ label, ...props }) => {
     );
 };
 
-const UpdateCustomerForm = ({name,email,age,id,gender,fetchCustomers}) => {
+const UpdateCustomerForm = ({initialValues,id,fetchCustomers}) => {
     return (
         <Formik
-            initialValues={{
-                name: name || '',
-                email: email || '',
-                age: age || '',
-                gender: gender || '',
-            }}
+            initialValues={initialValues}
             validationSchema={Yup.object({
                 name: Yup.string()
                     .max(20, 'Must be 20 characters or less')
@@ -50,9 +45,6 @@ const UpdateCustomerForm = ({name,email,age,id,gender,fetchCustomers}) => {
                 age: Yup.number()
                     .min(16, 'Must be at least 16 years old!')
                     .max(100, 'Must be less than 100 years old!')
-                    .required('Required'),
-                gender: Yup.string()
-                    .oneOf(['MALE', 'FEMALE'], 'Invalid Gender')
                     .required('Required'),
             })}
             onSubmit={(customer, { setSubmitting }) => {
@@ -96,11 +88,6 @@ const UpdateCustomerForm = ({name,email,age,id,gender,fetchCustomers}) => {
                             type="number"
                         />
 
-                        <MySelect label="Gender" name="gender" defaultValue={gender}>
-                            <option value="">Select a gender</option>
-                            <option value="MALE">Male</option>
-                            <option value="FEMALE">Female</option>
-                        </MySelect>
 
                         <Button disabled={!isValid || isSubmitting} type="submit">Submit</Button>
                     </Stack>

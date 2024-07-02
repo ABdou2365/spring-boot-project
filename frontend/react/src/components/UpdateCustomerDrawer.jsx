@@ -14,7 +14,7 @@ import UpdateCustomerForm from "./UpdateCustomerForm.jsx";
 const CloseIcon = () => "X"
 
 
-const UpdateForm = ({name,age,email,id,gender,fetchCustomers}) =>{
+const UpdateCustomerDrawer = ({initialValues,id,fetchCustomers}) =>{
     const { isOpen, onOpen, onClose } = useDisclosure()
     return(
         <>
@@ -24,7 +24,7 @@ const UpdateForm = ({name,age,email,id,gender,fetchCustomers}) =>{
                     <DrawerHeader>Create your account</DrawerHeader>
 
                     <DrawerBody>
-                        <UpdateCustomerForm name={name} gender={gender} age={age} id={id} email={email} fetchCustomers={fetchCustomers}/>
+                        <UpdateCustomerForm initialValues={initialValues}  id={id}  fetchCustomers={fetchCustomers}/>
                     </DrawerBody>
 
                     <DrawerFooter>
@@ -39,4 +39,4 @@ const UpdateForm = ({name,age,email,id,gender,fetchCustomers}) =>{
 }
 
 
-export default UpdateForm
+export default UpdateCustomerDrawer

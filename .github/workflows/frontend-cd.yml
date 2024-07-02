@@ -1,33 +1,19 @@
-name: CD - Deploy Backend
+name: CD - Deploy Frontend
 
 on:
   workflow_dispatch:
-
   push:
     branches:
       - master
     paths:
-      - backend/**
+      - frontend/react/**
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16.2
-        env:
-          POSTGRES_USER: amigoscode
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: customer
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5332:5432
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./frontend/react
     steps:
       - uses: actions/checkout@v4
       - name: Slack message and sha
@@ -40,26 +26,22 @@ jobs:
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deployment started :excuseme:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-      - name: Building with maven slack message
-        run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"Building with maven :maven:"}' 
-          ${{ secrets.SLACK_WEBHOOK_URL }}
-      - name: Login to docker
+      - name: generate build number
+        id: build-number
+        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: generate build number
-        id: build-number
-        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
-      - name: Build Package Push with Maven
-        run: ./mvnw -ntp -B verify -Ddocker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
+      - name: Docker build and push
+        run: |
+          chmod +x ../../.ci/build-publish.sh
+          USERNAME=abdomoutawakkil2002996 \
+          REPO=abde-react \
+          TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
+          ../../.ci/build-publish.sh . \
+          --build-arg api_base_url=http://abde-api-env.eba-5einnppu.eu-west-3.elasticbeanstalk.com/
       - name: pushing image tag to dockerhub slack Message
         run: >
           curl -X POST -H 'Content-type: application/json' 
@@ -69,10 +51,10 @@ jobs:
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json Before updating the api image tag"
-          cat ../Dockerrun.aws.json
-          sed -i -E 's_(abdomoutawakkil2002996/abde-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../Dockerrun.aws.json
+          cat ../../Dockerrun.aws.json
+          sed -i -E 's_(abdomoutawakkil2002996/abde-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating the api image tag"
-          cat ../Dockerrun.aws.json
+          cat ../../Dockerrun.aws.json
       - name: Starting deployment to Elastic Beanstalk slack message
         run: >
           curl -X POST -H 'Content-type: application/json' 
@@ -89,16 +71,17 @@ jobs:
           version_description: ${{ github.SHA }}
           region: ${{secrets.EB_REGION}}
           deployment_package: Dockerrun.aws.json
+          wait_for_environment_recovery: 60
       - name: Commiting to repo slack message
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Commiting to repo https://github.com/ABdou2365/spring-boot-project/ :githubloading:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: commit and push Dockerrun.aws.json
-        run : |
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ../Dockerrun.aws.json
+          git add ../../Dockerrun.aws.json
           git commit -m "Update Dockerrun.aws.json docker image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}"
           git push
       - name: Deployment and commit completed slack message

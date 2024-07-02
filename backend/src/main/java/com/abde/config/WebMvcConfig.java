@@ -11,10 +11,10 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("#{'${allowed-origins}'.split(',')}")
+    @Value("#{'${cors.allowed-origins}'.split(',')}")
     private List<String> allowedOrigins;
 
-    @Value("#{'${allowed-methods}'.split(',')}")
+    @Value("#{'${cors.allowed-methods}'.split(',')}")
     private List<String> allowedMethods;
 
     @Override

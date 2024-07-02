@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
   abde-api:
     container_name: abde-api
-    image: abdomoutawakkil2002996/abde-api
+    image: abdomoutawakkil2002996/abde-api:24.06.2024.20.28.52
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
     ports:
@@ -24,6 +24,18 @@ services:
       - db
     depends_on:
       - db
+    restart: unless-stopped
+  abde-react:
+    container_name: abde-react
+    image: abdomoutawakkil2002996/abde-react
+    build:
+      context: frontend/react
+      args:
+        api_base_url: http://localhost:8088
+    ports:
+      - "3000:5173"
+    depends_on:
+      - abde-api
     restart: unless-stopped
 
 networks:

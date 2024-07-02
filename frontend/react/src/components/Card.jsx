@@ -21,7 +21,7 @@ import {
 import React from "react";
 import {deleteCustomer} from "../services/client.js";
 import {successNotification} from "../services/notifications.js";
-import UpdateForm from "./UpdateForm.jsx";
+import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
 
 
@@ -33,6 +33,7 @@ export default function Card({name,age,email,id,gender,ageNumber,fetchCustomers}
         <Center py={6}>
             <Box
                 maxW={'300px'}
+                minW={'300px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.800')}
                 boxShadow={'2xl'}
@@ -84,9 +85,9 @@ export default function Card({name,age,email,id,gender,ageNumber,fetchCustomers}
 
                 </Box>
 
-                <Stack direction={'row'} justify={'center'}>
+                <Stack direction={'row'} justify={'center'} spacing={6}>
                     <Stack m={4}>
-                        <UpdateForm name={name} age={age} id={id} email={email} gender={gender} fetchCustomers={fetchCustomers}/>
+                        <UpdateCustomerDrawer initialValues={{name,age,email}} id={id}  fetchCustomers={fetchCustomers}/>
                     </Stack>
                     <Stack m={4}>
                         <Button colorScheme='red' onClick={onOpen} mt={8} rounded={"full"}>

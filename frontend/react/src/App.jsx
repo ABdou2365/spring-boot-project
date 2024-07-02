@@ -5,7 +5,7 @@ import {getCustomers} from "./services/client.js";
 import { Stack , Spinner } from "@chakra-ui/react";
 import Card from "./components/Card.jsx";
 import { Wrap, WrapItem } from '@chakra-ui/react'
-import DrawerForm from "./components/DrawerForm.jsx";
+import CreateCustomerDrawer from "./components/CreateCustomerDrawer.jsx";
 import {failNotification} from "./services/notifications.js";
 
 
@@ -51,7 +51,7 @@ function App() {
         if (customers.length <= 0) {
             return (
                 <SidebarWithHeader>
-                    <DrawerForm fetchCustomers={fetchCustomers}/>
+                    <CreateCustomerDrawer fetchCustomers={fetchCustomers}/>
                     <Text mt={3}>No customer is available</Text>
                 </SidebarWithHeader>
             )
@@ -60,7 +60,7 @@ function App() {
 
         return (
             <SidebarWithHeader>
-                <DrawerForm fetchCustomers={fetchCustomers}/>
+                <CreateCustomerDrawer fetchCustomers={fetchCustomers}/>
                 <Wrap spacing='30px' justify='center'>
                     {
                         customers.map((customer, index) => (

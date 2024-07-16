@@ -5,6 +5,8 @@ server:
 cors:
   allowed-origins: "*"
   allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
 
 spring:
   datasource:
@@ -25,6 +27,7 @@ spring:
 
 logging:
   level:
+    org.springframework.security: DEBUG
     org.springframework: DEBUG
     org.hibernate: DEBUG
     com.zaxxer.hikari: DEBUG

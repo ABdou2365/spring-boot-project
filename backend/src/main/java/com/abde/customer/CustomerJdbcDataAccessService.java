@@ -22,7 +22,7 @@ public class CustomerJdbcDataAccessService implements CustomerDAO {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                SELECT id,name,email,age,gender FROM customer;
+                SELECT id,name,email,password,age,gender FROM customer;
                 """;
 
         return jdbcTemplate.query(sql,customerRowMapper );
@@ -33,7 +33,7 @@ public class CustomerJdbcDataAccessService implements CustomerDAO {
     @Override
     public Optional<Customer> selectCustomerById(Long id) {
         var sql = """
-                SELECT id,name,email,age,gender FROM customer WHERE id=?;
+                SELECT id,name,email,password,age,gender FROM customer WHERE id=?;
                 """;
         return jdbcTemplate.query(sql,customerRowMapper,id).stream().findFirst();
     }
@@ -41,9 +41,9 @@ public class CustomerJdbcDataAccessService implements CustomerDAO {
     @Override
     public void insertCustomer(Customer customer) {
         var sql = """
-                INSERT INTO customer(name,email,age,gender) VALUES (?,?,?,?);
+                INSERT INTO customer(name,email,password,age,gender) VALUES (?,?,?,?,?);
                 """;
-        int result = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(),customer.getGender().name());
+        int result = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(),customer.getPassword(), customer.getAge(),customer.getGender().name());
         System.out.println("Customer inserted into database = " + result);
     }
 
@@ -95,5 +95,13 @@ public class CustomerJdbcDataAccessService implements CustomerDAO {
                     """;
             jdbcTemplate.update(sql, customer.getAge(), customer.getId());
         }
+    }
+
+    @Override
+    public Optional<Customer> selectCustomerByEmail(String email) {
+        var sql = """
+                SELECT id,name,email,password,age,gender FROM customer WHERE email=?;
+                """;
+        return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
     }
 }

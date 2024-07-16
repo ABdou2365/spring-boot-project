@@ -4,28 +4,39 @@ import com.abde.error.BadRequestException;
 import com.abde.error.DuplicatedRessourceException;
 import com.abde.error.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
 
 
     private final CustomerDAO customerDAO;
+    private final CustomerDTOMapper customerDTOMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO) {
+    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder) {
 
         this.customerDAO = customerDAO;
+        this.customerDTOMapper = customerDTOMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Customer> getCustomers() {
-        return customerDAO.selectAllCustomers();
+    public List<CustomerDTO> getCustomers() {
+        return customerDAO.selectAllCustomers()
+                .stream()
+                .map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer getCustomer(Long id) {
+    public CustomerDTO getCustomer(Long id) {
         return customerDAO.selectCustomerById(id)
+                .map(customerDTOMapper)
                 .orElseThrow(
                 () -> new ResourceNotFoundException("Customer with id = [%s] Not found".formatted(id))
         );
@@ -40,6 +51,7 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegestrationRequest.name(),
                 customerRegestrationRequest.email(),
+                passwordEncoder.encode(customerRegestrationRequest.password()),
                 customerRegestrationRequest.age(),
                 customerRegestrationRequest.gender());
 
@@ -52,7 +64,9 @@ public class CustomerService {
     public void updateCustomer(Long id, CustomerUpdateRequest customerUpdateRequest) {
 
 
-        Customer customer = getCustomer(id);
+        Customer customer = customerDAO.selectCustomerById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Customer with id = [%s] Not found".formatted(id)));
 
         boolean changes = false;
 

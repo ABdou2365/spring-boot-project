@@ -1,9 +1,11 @@
 package com.abde.customer;
 
+import com.abde.jwt.JWTUtil;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -11,24 +13,28 @@ import java.util.Optional;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final JWTUtil jwtUtils;
 
-    private CustomerController(CustomerService customerService) {
+    private CustomerController(CustomerService customerService, JWTUtil jwtUtils) {
         this.customerService = customerService;
+        this.jwtUtils = jwtUtils;
     }
 
     @GetMapping
-    public List<Customer> getCustomers() {
+    public List<CustomerDTO> getCustomers() {
         return customerService.getCustomers();
     }
 
     @GetMapping("{customerId}")
-    public Customer getCustomer(@PathVariable("customerId") Long customerId) {
+    public CustomerDTO getCustomer(@PathVariable("customerId") Long customerId) {
         return customerService.getCustomer(customerId);
     }
 
     @PostMapping
-    public void createCustomer(@RequestBody CustomerRegestrationRequest request) {
+    public ResponseEntity<?> createCustomer(@RequestBody CustomerRegestrationRequest request) {
         customerService.createCustomer(request);
+        String token = jwtUtils.issueToken(request.email(), "ROLE_USER");
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,token).build();
     }
 
     @PutMapping("{customerId}")

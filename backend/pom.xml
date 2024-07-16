@@ -27,6 +27,7 @@
 		<docker.image.name>abde-api</docker.image.name>
 		<docker.image.tag/>
 		<skip.it>false</skip.it>
+		<jsonwebtokens.version>0.12.6</jsonwebtokens.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -102,6 +103,32 @@
 			<artifactId>commons-compress</artifactId>
 			<version>1.26.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jsonwebtokens.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jsonwebtokens.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jsonwebtokens.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 		<build>

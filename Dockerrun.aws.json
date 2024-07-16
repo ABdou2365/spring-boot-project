@@ -15,7 +15,7 @@
     },
     {
       "name": "abde-api",
-      "image": "abdomoutawakkil2002996/abde-api:24.06.2024.20.28.52",
+      "image": "abdomoutawakkil2002996/abde-api:16.07.2024.20.58.55",
       "essential": true,
       "memory": 512,
       "portMappings": [

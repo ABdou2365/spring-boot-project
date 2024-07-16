@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "abde-react",
-      "image": "abdomoutawakkil2002996/abde-react:latest",
+      "image": "abdomoutawakkil2002996/abde-react:03.07.2024.01.28.02",
       "essential": true,
       "memory": 256,
       "portMappings": [

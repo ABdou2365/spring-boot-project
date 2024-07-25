@@ -2,8 +2,8 @@ import React from 'react';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { Alert, Box, Button, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
-import {saveCustomer, updateCustomer} from "../services/client.js";
-import {failNotification, successNotification} from "../services/notifications.js";
+import {saveCustomer} from "../../services/client.js";
+import {failNotification, successNotification} from "../../services/notifications.js";
 
 const MyTextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
@@ -31,10 +31,16 @@ const MySelect = ({ label, ...props }) => {
     );
 };
 
-const UpdateCustomerForm = ({initialValues,id,fetchCustomers}) => {
+const CreateCustomerForm = ({fetchCustomers}) => {
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={{
+                name: '',
+                email: '',
+                age: 0,
+                password:'',
+                gender: '',
+            }}
             validationSchema={Yup.object({
                 name: Yup.string()
                     .max(20, 'Must be 20 characters or less')
@@ -46,15 +52,23 @@ const UpdateCustomerForm = ({initialValues,id,fetchCustomers}) => {
                     .min(16, 'Must be at least 16 years old!')
                     .max(100, 'Must be less than 100 years old!')
                     .required('Required'),
+                password: Yup.string()
+                    .max(20, 'Must be 20 characters or less')
+                    .min(8,"Must be 8 characters or more")
+                    .required('Required'),
+                gender: Yup.string()
+                    .oneOf(['MALE', 'FEMALE'], 'Invalid Gender')
+                    .required('Required'),
             })}
             onSubmit={(customer, { setSubmitting }) => {
                 setSubmitting(true)
-                updateCustomer(id,customer)
+                saveCustomer(customer)
                     .then(res =>{
-                        successNotification("customer ",`${customer.name} was successfully updated`
+                        successNotification("customer saved",`${customer.name} was successfully saved`
                             )
                         console.log(res)
                     fetchCustomers()
+
                 }
                 ).catch(err =>{
                     failNotification(
@@ -74,20 +88,35 @@ const UpdateCustomerForm = ({initialValues,id,fetchCustomers}) => {
                             label="Name"
                             name="name"
                             type="text"
+                            placeholder="Jane"
                         />
 
                         <MyTextInput
                             label="Email Address"
                             name="email"
                             type="email"
+                            placeholder="jane@formik.com"
                         />
 
                         <MyTextInput
                             label="Age"
                             name="age"
                             type="number"
+                            placeholder="20"
                         />
 
+                        <MyTextInput
+                            label="Password"
+                            name="password"
+                            type="password"
+                            placeholder="Type a secure password"
+                        />
+
+                        <MySelect label="Gender" name="gender">
+                            <option value="">Select a gender</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                        </MySelect>
 
                         <Button disabled={!isValid || isSubmitting} type="submit">Submit</Button>
                     </Stack>
@@ -97,4 +126,4 @@ const UpdateCustomerForm = ({initialValues,id,fetchCustomers}) => {
     );
 };
 
-export default UpdateCustomerForm;
+export default CreateCustomerForm;

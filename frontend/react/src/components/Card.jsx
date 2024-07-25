@@ -21,7 +21,7 @@ import {
 import React from "react";
 import {deleteCustomer} from "../services/client.js";
 import {successNotification} from "../services/notifications.js";
-import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
+import UpdateCustomerDrawer from "./customer/UpdateCustomerDrawer.jsx";
 
 
 

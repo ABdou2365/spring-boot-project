@@ -1,12 +1,14 @@
 import { Text} from '@chakra-ui/react'
-import SidebarWithHeader from "./shared/SideBar.jsx";
+import SidebarWithHeader from "./components/shared/SideBar.jsx";
 import {useEffect, useState} from "react";
 import {getCustomers} from "./services/client.js";
 import { Stack , Spinner } from "@chakra-ui/react";
 import Card from "./components/Card.jsx";
 import { Wrap, WrapItem } from '@chakra-ui/react'
-import CreateCustomerDrawer from "./components/CreateCustomerDrawer.jsx";
+import CreateCustomerDrawer from "./components/customer/CreateCustomerDrawer.jsx";
 import {failNotification} from "./services/notifications.js";
+
+
 
 
 function App() {
@@ -17,7 +19,6 @@ function App() {
     const fetchCustomers = () => {
         getCustomers().then(res => {
                 setCustomers(res.data)
-                console.log(res.data)
             }
         ).catch(err => {
             failNotification(

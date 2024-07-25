@@ -1,8 +1,6 @@
 package com.abde.Auth;
 
-import com.abde.customer.CustomerRegestrationRequest;
-import com.abde.customer.CustomerService;
-import com.abde.jwt.JWTUtil;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

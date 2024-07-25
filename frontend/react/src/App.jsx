@@ -13,7 +13,7 @@ import {failNotification} from "./services/notifications.js";
 
 function App() {
 
-    console.log("Debbuging the github actions")
+    console.log("Debbuging the github actionsss")
     const [customers,setCustomers] = useState([]);
     const [loading,setLoading] = useState(true);
 

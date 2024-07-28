@@ -24,6 +24,17 @@ const AuthProvider = ({children}) =>{
         }
     },[])
 
+    const SetCustomerFromToken = ()=>{
+        let token = localStorage.getItem("token")
+        if (token){
+            const decodedToken = jwtDecode(token)
+            setCustomer({
+                username: decodedToken.sub,
+                roles: decodedToken.scopes
+            })
+        }
+    }
+
 
     const login = async (usernameAndPassword)=>{
         return new Promise((resolve,reject)=>{
@@ -69,7 +80,8 @@ const AuthProvider = ({children}) =>{
             customer,
             login,
             logOut,
-            isCustomerAuthenticated
+            isCustomerAuthenticated,
+            SetCustomerCredentials: SetCustomerFromToken
         }}>
             {children}
         </AuthContext.Provider>

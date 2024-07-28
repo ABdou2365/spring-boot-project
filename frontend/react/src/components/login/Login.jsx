@@ -16,8 +16,8 @@ import {Formik, Form, useField} from "formik";
 import * as Yup from "yup";
 import React, {useEffect} from "react";
 import {useAuth} from "../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
-import {failNotification} from "../../services/notifications.js";
+import {redirect, useNavigate} from "react-router-dom";
+import {failNotification, successNotification} from "../../services/notifications.js";
 
 
 const MyTextInput = ({ label, ...props }) => {
@@ -119,6 +119,12 @@ export const Login = () => {
                     </Stack>
                     <Heading fontSize={'2xl'}>Sign in to your account</Heading>
                     <FormLogin />
+                    <Stack pt={6}>
+                        <Text align={'center'}>
+                            Don't have an account?
+                            <Button background={"white"} color={'blue.400'} onClick={()=>{navigate("/signup")}}>Sign Up</Button>
+                        </Text>
+                    </Stack>
                 </Stack>
             </Flex>
             <Flex

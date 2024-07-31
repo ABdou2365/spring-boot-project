@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "abde-api",
-      "image": "abdomoutawakkil2002996/abde-api:25.07.2024.20.02.04",
+      "image": "abdomoutawakkil2002996/abde-api:31.07.2024.21.51.19",
       "essential": true,
       "memory": 512,
       "portMappings": [
